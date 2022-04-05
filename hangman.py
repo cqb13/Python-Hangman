@@ -14,41 +14,28 @@ def reset():  # resets vars for new round
 
 
 def start():  # start function
-    global mode, autoSave
+    global mode
     print('---< commands >---')
     print('enter any letter as your guess')
     print('enter !guess to guess the whole word')
     print('enter !used to see used letters')
+    print('enter !save to save your stats')
     print('enter !end to give and end the game')
     print('=-=-=-=-=-=-=-=-=-=-=-=-=-=')
     reset()
     time.sleep(1)
-    print('do you want to auto save results to a file?')
-    print('enter y to continue\nenter any key to skip')
-    option = input('enter your choice: ')
-    if option == 'y':
-        autoSave = True
-    else:
-        autoSave = False
-    print('!normal is for normal mode | 12 lives, full word wrong -2 lives')
-    print('!hard is for hard mode | longer words, 6 lives, full word wrong you die')
+    print('!normal is for normal mode | lives: 12, word length any, guess wrong: -2 lives')
+    print('!hard is for hard mode | lives: 6, word length > 6, guess wrong: death')
     mode = input('enter !normal or !hard: ')
     main()
 
 
 def again():
-    global mode, attempts, endCondition
+    global mode, attempts, endCondition, autoSave
     option = input('enter !save to save your results\nenter !play to play again\nenter !stop to stop\n')
-    if option == '!play':
-        reset()
-        time.sleep(1)
-        print('!normal is for normal mode | 12 lives, full word wrong -2 lives')
-        print('!hard is for hard mode | longer words, 6 lives, full word wrong you die')
-        mode = input('enter !normal or !hard: ')
-        main()
-    elif option == '!save' or autoSave is True:
-        if autoSave is True:
-            print('auto saved')
+    if option == '!stop':
+        exit()
+    elif option == '!save':  # needs auto save (function maybe)
         file = open('history', 'a')
         file.write('\n=-=-=-=-=-=-=-=-=-=-=-=-=-=\n')
         file.write(f'{endCondition}\n')
@@ -56,6 +43,13 @@ def again():
             f'word: {word[:-1]}\nmode: {mode[1:]}\nlives left: {lives}\nwrong letters: {attempts - lives}\nused letters: {len(used)}\n')
         file.write(f'used letter list: {used}\n')
         again()
+    elif option == '!play':
+        reset()
+        time.sleep(1)
+        print('!normal is for normal mode | lives: 12, word length any, guess wrong: -2 lives')
+        print('!hard is for hard mode | lives: 6, word length > 6, guess wrong: death')
+        mode = input('enter !normal or !hard: ')
+        main()
     else:
         exit()
 
@@ -114,6 +108,8 @@ def main():
 
         if option == '!used':
             print(f'used letters: {used}')
+        elif option == '!save':
+            print('you can do that at the end of a round')
         elif option == '!end':
             print('are you sure you want to give up?')
             print('enter y to give up\nenter any key to skip')
@@ -196,3 +192,5 @@ print('---< welcome to hangman >---')
 print('---<   made by: cqb13   >---\n')
 time.sleep(1)
 start()
+
+# make auto save that works
