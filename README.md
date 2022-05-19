@@ -15,4 +15,5 @@
 - Run the hangman.py file.
 
 *Note: You need to download python inorder to run the game*
+
 *Note: An IDE such as PyCharm or VsCode is recommended*
