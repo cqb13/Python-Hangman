@@ -3,7 +3,8 @@ import random
 import time
 
 
-def reset():  # resets vars for new round
+# resets vars for new round
+def reset():
     global word, used, correct, fullWord, attempts, condition
     word = ''
     used = []
@@ -13,7 +14,8 @@ def reset():  # resets vars for new round
     condition = 0
 
 
-def start():  # start function
+# start function
+def start():
     global mode
     print('---< commands >---')
     print('enter any letter as your guess')
@@ -35,7 +37,7 @@ def again():
     option = input('enter !save to save your results\nenter !play to play again\nenter !stop to stop\n')
     if option == '!stop':
         exit()
-    elif option == '!save':  # needs auto save (function maybe)
+    elif option == '!save':
         file = open('history', 'a')
         file.write('\n=-=-=-=-=-=-=-=-=-=-=-=-=-=\n')
         file.write(f'{endCondition}\n')
@@ -54,7 +56,8 @@ def again():
         exit()
 
 
-def stats():  # stats for end of game
+# stats for end of game
+def stats():
     global mode, attempts, lives, endCondition
     if attempts < 0:
         attempts = 0
@@ -64,7 +67,8 @@ def stats():  # stats for end of game
     else:
         attempts = 12
     print('=-=-=-=-=-=-=-=-=-=-=-=-=-=')
-    if condition == 0:  # sets end condition of the game
+    # sets end condition of the game
+    if condition == 0:
         endCondition = 'you won'
     elif condition == 1:
         endCondition = 'you lost | you ran out of lives'
@@ -95,12 +99,14 @@ def main():
     else:
         print('you are on normal mode')
     wordlength = len(word)
-    while wordlength != 0:  # creates the word visual
+    # creates the word visual
+    while wordlength != 0:
         fullWord.append('_')
         wordlength -= 1
-    fullWord.pop()  # fix's weird glitch with word visual
+    fullWord.pop()
     print(fullWord)
-    print(f'word length: {len(word) - 1}')  # idk whats wrong with this, but it needs to be like this
+    # takes enter key value from words file needs it removed
+    print(f'word length: {len(word) - 1}')
     print(f'lives: {attempts}')
 
     while attempts > 0:
@@ -119,20 +125,24 @@ def main():
                 stats()
             else:
                 print('skipped')
-        elif option == '!guess':  # option to guess the full word
+        # option to guess the full word
+        elif option == '!guess':
             if mode == '!hard':
                 print('if incorrect you will lose')
             else:
                 print('if incorrect you will lose 2 lives')
             print('enter y to give up\n enter any key to skip')
             option = input('enter your choice: ')
-            word = word[:-1]  # something wrong with word, idk anymore
-            if option == 'y':  # makes sure that you actually want to do it
+            word = word[:-1]
+            # confirm option
+            if option == 'y':
                 option = input('enter word: ')
-                if option == word:  # checks if the word is right
+                # checks if the word is right after guessing full word
+                if option == word:
                     condition = 0
                     stats()
-                elif option != word and mode != '!hard':  # checks if you are on normal mode
+                # checks if you are on normal mode
+                elif option != word and mode != '!hard':
                     print('that\'s not the right word | -2 attempts')
                     attempts -= 2
                     print(f'lives: {attempts}')
@@ -145,12 +155,14 @@ def main():
             else:
                 print('skipped')
         else:
-            if len(option) > 1:  # checks that you only entered 1 letter
+            # checks that you only entered 1 letter
+            if len(option) > 1:
                 print('enter !guess to guess the full word')
             else:
                 letterUsed = False  # I don't fucking know, it does something I think
                 num = 0
-                for _ in used:  # checks if letter has been used before
+                # checks if letter has been used before
+                for _ in used:
                     if option == used[num]:
                         print(f'letter {option} has already been used')
                         print('enter !used to see all used letters')
@@ -158,22 +170,26 @@ def main():
                     num += 1
 
                 num = 0
-                for _ in word:  # adds letter to its spot in hidden word
+                # adds letter to its spot in hidden word
+                for _ in word:
                     if letterUsed is True:
                         pass
-                    elif option == word[num]:  # weird word symbol thing
+                    # setup for blank spots
+                    elif option == word[num]:
                         temp = list(fullWord)
                         temp[num] = option
                         fullWord = ''.join(temp)
                         correct += 1
                     num += 1
 
-                if option not in word and option not in used:  # checks if it should take away a life
+                # checks if it should take away a life
+                if option not in word and option not in used:
                     attempts -= 1
 
                 print(fullWord)
 
-                if letterUsed is True:  # adds letter to used list
+                # adds letter to used list
+                if letterUsed is True:
                     pass
                 else:  # adds every letter to list
                     used.append(option)
@@ -192,5 +208,3 @@ print('---< welcome to hangman >---')
 print('---<   made by: cqb13   >---\n')
 time.sleep(1)
 start()
-
-# make auto save that works
