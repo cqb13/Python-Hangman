@@ -22,7 +22,6 @@ def reset():
     condition = 0
 
 
-# TODO: add colors to console messages
 # start function
 def start():
     global mode
@@ -116,7 +115,7 @@ def main():
     print(fullWord)
     # takes enter key value from words file needs it removed
     print(f'word length: {len(word) - 1}')
-    print(f'lives: {attempts}')
+    print(f'lives: ' + green + f'{attempts}' + white)
 
     while attempts > 0:
         option = input('enter a guess: ')
@@ -164,10 +163,9 @@ def main():
             else:
                 print(yellow + 'skipped' + white)
         else:
-            # checks that you only entered 1 letter
-            if len(option) > 1:
+            if len(option) > 1:  # checks that you only entered 1 letter
                 print(yellow + 'enter !guess to guess the full word' + white)
-            else:
+            elif option.isalpha():  # only allows letters
                 letterUsed = False  # I don't fucking know, it does something I think
                 num = 0
                 # checks if letter has been used before
@@ -209,9 +207,24 @@ def main():
                     condition = 1
                     stats()
 
-                # TODO: add health colors based on health
-                print(f'lives: {attempts}')
+                # health color
+                if mode == '!normal':
+                    if attempts >= 8:
+                        print(f'lives: ' + green + f'{attempts}' + white)
+                    elif 8 > attempts >= 4:
+                        print(f'lives: ' + yellow + f'{attempts}' + white)
+                    else:
+                        print(f'lives: ' + red + f'{attempts}' + white)
+                else:
+                    if attempts >= 4:
+                        print(f'lives: ' + green + f'{attempts}' + white)
+                    elif 4 > attempts >= 2:
+                        print(f'lives: ' + yellow + f'{attempts}' + white)
+                    else:
+                        print(f'lives: ' + red + f'{attempts}' + white)
                 print('=-=-=-=-=-=-=-=-=-=-=-=-=-=')
+            else:
+                print(yellow + 'you can only guess letters' + white)
 
 
 print('---< welcome to hangman >---')
