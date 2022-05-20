@@ -2,7 +2,6 @@ import linecache
 import random
 import time
 
-
 # colors for console
 red = "\u001B[31m"
 yellow = '\u001B[33m'
@@ -13,13 +12,14 @@ blue = '\u001B[24m'
 
 # resets vars for new round
 def reset():
-    global word, used, correct, fullWord, attempts, condition
+    global word, used, correct, fullWord, attempts, condition, againTimes
     word = ''
     used = []
     correct = 0
     fullWord = []
     attempts = 12
     condition = 0
+    againTimes = 0
 
 
 # start function
@@ -41,8 +41,12 @@ def start():
 
 
 def again():
-    global mode, attempts, endCondition, autoSave
-    option = input('enter !save to save your results\nenter !play to play again\nenter !stop to stop\n')
+    global mode, attempts, endCondition, autoSave, againTimes
+    if againTimes == 0:
+        print('enter !save to save your results')
+    print('enter !play to play again\nenter !stop to stop')
+    option = input('\nenter you choice: ')
+    print('=-=-=-=-=-=-=-=-=-=-=-=-=-=')
     if option == '!stop':
         exit()
     elif option == '!save':
@@ -52,6 +56,7 @@ def again():
         file.write(
             f'word: {word[:-1]}\nmode: {mode[1:]}\nlives left: {lives}\nwrong letters: {attempts - lives}\nused letters: {len(used)}\n')
         file.write(f'used letter list: {used}\n')
+        againTimes += 1
         again()
     elif option == '!play':
         reset()
@@ -59,6 +64,7 @@ def again():
         print(green + '!normal is for normal mode | lives: 12, word length any, guess wrong: -2 lives')
         print(red + '!hard is for hard mode | lives: 6, word length > 6, guess wrong: death' + white)
         mode = input('enter !normal or !hard: ')
+        againTimes = 0
         main()
     else:
         exit()
@@ -98,12 +104,12 @@ def stats():
 
 def main():
     global fullWord, word, correct, attempts, condition
-    word = linecache.getline('words', random.randrange(0, 8749))
+    word = linecache.getline('words', random.randrange(0, 8747))
     if mode == '!hard':
         print(red + 'you are on hard mode' + white)
         attempts = 6
         while len(word) <= 6:
-            word = linecache.getline('words', random.randrange(0, 8749))
+            word = linecache.getline('words', random.randrange(0, 8747))
     else:
         print(green + 'you are on normal mode' + white)
     wordlength = len(word)
@@ -117,6 +123,7 @@ def main():
     print(f'word length: {len(word) - 1}')
     print(f'lives: ' + green + f'{attempts}' + white)
 
+    # game loop
     while attempts > 0:
         option = input('enter a guess: ')
 
